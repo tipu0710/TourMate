@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.tsr.android.tourmate.MainActivity">
+
+    <EditText
+        android:gravity="center"
+        android:hint="Event Name"
+        android:id="@+id/event_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:gravity="center"
+        android:hint="Event Destination"
+        android:id="@+id/destination"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:gravity="center"
+        android:hint="Event Budget"
+        android:id="@+id/budget"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:gravity="center"
+        android:text="From Date"
+        android:id="@+id/from_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:gravity="center"
+        android:text="To Date"
+        android:id="@+id/to_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/create_event"
+        android:text="Create Event"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+<Button
+        android:id="@+id/show_event"
+        android:text="Show Event"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="showEvent"/>
+
+</LinearLayout>
