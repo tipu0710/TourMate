@@ -4,19 +4,19 @@ package com.tsr.android.tourmate;
  * Created by tsult on 08-May-17.
  */
 
-public class DateFiender {
-    int year,mounth,day;
+public class DateFinder {
+    long year,mounth,day;
 
-    public DateFiender(int year, int mounth, int day) {
+    public DateFinder(long year, long mounth, long day) {
         this.year = year;
         this.mounth = mounth;
         this.day = day;
     }
 
-    public DateFiender() {
+    public DateFinder() {
     }
 
-    public int getYear() {
+    public long getYear() {
         return year;
     }
 
@@ -24,7 +24,7 @@ public class DateFiender {
         this.year = year;
     }
 
-    public int getMounth() {
+    public long getMounth() {
         return mounth;
     }
 
@@ -32,7 +32,7 @@ public class DateFiender {
         this.mounth = mounth;
     }
 
-    public int getDay() {
+    public long getDay() {
         return day;
     }
 

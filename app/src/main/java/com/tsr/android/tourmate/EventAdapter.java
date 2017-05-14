@@ -1,8 +1,6 @@
 package com.tsr.android.tourmate;
 
-import android.app.Activity;
 import android.content.Context;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -40,10 +38,10 @@ public class EventAdapter extends ArrayAdapter<EventList> {
         eventName.setText(eventList.get(position).getEventName());
         budget.setText(eventList.get(position).getBudget());
         destination.setText(eventList.get(position).getDestination());
-        DateFiender fromDateFiender = eventList.get(position).getFromDateFinder();
-        fromDate.setText(fromDateFiender.getDay()+"/"+fromDateFiender.getMounth()+"/"+fromDateFiender.getYear());
-        DateFiender toDateFiender = eventList.get(position).getToDateFinder();
-        toDate.setText(toDateFiender.getDay()+"/"+toDateFiender.getMounth()+"/"+toDateFiender.getYear());
+        DateFinder fromDateFinder = eventList.get(position).getFromDateFinder();
+        fromDate.setText(fromDateFinder.getDay()+"/"+ fromDateFinder.getMounth()+"/"+ fromDateFinder.getYear());
+        DateFinder toDateFinder = eventList.get(position).getToDateFinder();
+        toDate.setText(toDateFinder.getDay()+"/"+ toDateFinder.getMounth()+"/"+ toDateFinder.getYear());
         return convertView;
     }
 }

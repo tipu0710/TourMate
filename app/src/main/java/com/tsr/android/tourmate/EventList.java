@@ -1,7 +1,5 @@
 package com.tsr.android.tourmate;
 
-import java.util.List;
-
 /**
  * Created by tsult on 08-May-17.
  */
@@ -10,10 +8,10 @@ public class EventList {
     private String eventName;
     private String destination;
     private String budget;
-    private DateFiender fromDateFinder;
-    private DateFiender toDateFinder;
+    private DateFinder fromDateFinder;
+    private DateFinder toDateFinder;
 
-    public EventList(String eventName, String destination, String budget, DateFiender fromDateFinder, DateFiender toDateFinder) {
+    public EventList(String eventName, String destination, String budget, DateFinder fromDateFinder, DateFinder toDateFinder) {
         this.eventName = eventName;
         this.destination = destination;
         this.budget = budget;
@@ -48,19 +46,19 @@ public class EventList {
         this.budget = budget;
     }
 
-    public DateFiender getFromDateFinder() {
+    public DateFinder getFromDateFinder() {
         return fromDateFinder;
     }
 
-    public void setFromDateFinder(DateFiender fromDateFinder) {
+    public void setFromDateFinder(DateFinder fromDateFinder) {
         this.fromDateFinder = fromDateFinder;
     }
 
-    public DateFiender getToDateFinder() {
+    public DateFinder getToDateFinder() {
         return toDateFinder;
     }
 
-    public void setToDateFinder(DateFiender toDateFinder) {
+    public void setToDateFinder(DateFinder toDateFinder) {
         this.toDateFinder = toDateFinder;
     }
 }

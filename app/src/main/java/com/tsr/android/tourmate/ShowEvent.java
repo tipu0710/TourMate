@@ -1,30 +1,21 @@
 package com.tsr.android.tourmate;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ShowEvent extends AppCompatActivity {
 
@@ -38,8 +29,11 @@ public class ShowEvent extends AppCompatActivity {
     private ArrayList<EventList> eventLists;
     private String mUid= "";
 
+    private long fromDay,fromMounth,fromYear,toDay,toMounth,toYear;
+
     private RecyclerView recyclerView;
     public static final int RC_SIGN_IN = 1;
+    public static final String ACTION = "send_key";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,19 +62,47 @@ public class ShowEvent extends AppCompatActivity {
         ) {
             @Override
             protected void populateViewHolder(eventViewHolder viewHolder, EventList model, int position) {
-                viewHolder.setEventName(model.getEventName());
 
+                final String key = getRef(position).getKey();
+
+                viewHolder.setEventName(model.getEventName());
                 viewHolder.setDestination(model.getDestination());
                 viewHolder.setBudget(model.getBudget());
-                DateFiender fromDateFiender = new DateFiender();
-                fromDateFiender = model.getFromDateFinder();
-                String formDate = fromDateFiender.getDay()+"/"+fromDateFiender.getMounth()+"/"+fromDateFiender.getYear();
+                DateFinder fromDateFinder = new DateFinder();
+                fromDateFinder = model.getFromDateFinder();
+                fromDay = fromDateFinder.getDay();
+                fromMounth = fromDateFinder.getMounth();
+                fromYear = fromDateFinder.getYear();
+                String formDate = fromDay+"/"+fromMounth+"/"+fromYear;
                 viewHolder.setFromDate(formDate);
-                DateFiender toDateFiender = new DateFiender();
-                toDateFiender = model.getFromDateFinder();
-                String toDate = toDateFiender.getDay()+"/"+toDateFiender.getMounth()+"/"+toDateFiender.getYear();
+                DateFinder toDateFinder = new DateFinder();
+                toDateFinder = model.getToDateFinder();
+
+                toDay = toDateFinder.getDay();
+                toMounth = toDateFinder.getMounth();
+                toYear = toDateFinder.getYear();
+                String toDate = toDay+"/"+toMounth+"/"+toYear;
                 viewHolder.setToDate(toDate);
+
+                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Intent intent = new Intent(ShowEvent.this,MainActivity.class);
+                        intent.putExtra("key",key);
+                        intent.putExtra("status",true);
+                        intent.putExtra("uid",mUid);
+                        /*intent.putExtra("fromDay",fromDay);
+                        intent.putExtra("fromMounth",fromMounth);
+                        intent.putExtra("fromYear",fromYear);
+                        intent.putExtra("toDay",toDay);
+                        intent.putExtra("toMounth",toMounth);
+                        intent.putExtra("toYear",toYear);*/
+                        startActivity(intent);
+                    }
+                });
             }
+
         };
         recyclerView.setAdapter(firebaseRecyclerAdapter);
 
