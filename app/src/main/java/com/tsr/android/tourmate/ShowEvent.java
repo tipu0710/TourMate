@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,7 +47,6 @@ public class ShowEvent extends AppCompatActivity {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         Intent intent = getIntent();
         mUid = intent.getStringExtra("uid");
-
         mDatabaseReference = mFirebaseDatabase.getReference().child(mUid);
 
     }

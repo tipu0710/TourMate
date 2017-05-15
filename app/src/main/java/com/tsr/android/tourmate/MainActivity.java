@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.ui.email.CheckEmailFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private long fromDay,fromMounth,fromYear,toDay,toMounth,toYear,currentDay,currentMounth;
     private String muserName;
     private String mUid= "";
-    private boolean status;
+    private boolean status,dateStatus;
 
     public static final int RC_SIGN_IN = 1;
     private String keyValue = "";
@@ -73,18 +74,14 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent =getIntent();
         status = intent.getBooleanExtra("status",false);
+        mUid = intent.getStringExtra("uid");
+
+
 
         if (status){
             keyValue = intent.getStringExtra("key");
-            mUid = intent.getStringExtra("uid");
-            /*fromDay= intent.getIntExtra("fromDay",-1);
-            fromMounth= intent.getIntExtra("fromMounth",-1);
-            fromYear= intent.getIntExtra("fromYear",-1);
-            toDay= intent.getIntExtra("toDay",-1);
-            toMounth= intent.getIntExtra("toMounth",-1);
-            toYear= intent.getIntExtra("toYear",-1);*/
             mDatabaseReference = mFirebaseDatabase.getReference().child(mUid);
-            Toast.makeText(this, mUid, Toast.LENGTH_SHORT).show();
+
             mDatabaseReference.child(keyValue).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -99,12 +96,13 @@ public class MainActivity extends AppCompatActivity {
                     fromDay= (long) map.get("day");
                     fromMounth= (long) map.get("mounth");
                     fromYear= (long) map.get("year");
-
+                    
                     map = (HashMap<Long, Object>) dataSnapshot.child("toDateFinder").getValue();
                     toDay= (long) map.get("day");
                     toMounth= (long) map.get("mounth");
                     toYear= (long) map.get("year");
 
+                    checkDateCondition();
                 }
 
                 @Override
@@ -115,44 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
             createEvent.setText("Update");
             showEventBtn.setVisibility(View.GONE);
-            fromDate.setText(""+String.valueOf(fromDay)+"/"+String.valueOf(fromMounth)+"/"+String.valueOf(fromYear));
 
-            toDate.setText(""+String.valueOf(toDay)+"/"+String.valueOf(toMounth)+"/"+String.valueOf(toYear));
-
-
-            Calendar calendar1 = Calendar.getInstance(Locale.getDefault());
-            if (fromYear>=calendar1.get(Calendar.YEAR)){
-                if (fromMounth==(calendar1.get(Calendar.MONTH)+1)){
-                    if (fromDay>=calendar1.get(Calendar.DAY_OF_MONTH)){
-                        fromDate.setEnabled(true);
-                    }else {
-                        fromDate.setEnabled(false);
-                    }
-                }else if (fromMounth>(calendar1.get(Calendar.MONTH)+1)){
-                    fromDate.setEnabled(true);
-                }else {
-                    fromDate.setEnabled(false);
-                }
-            }else {
-                fromDate.setEnabled(false);
-            }
-
-            if (toYear>=calendar1.get(Calendar.YEAR)){
-                if (toMounth==(calendar1.get(Calendar.MONTH)+1)){
-                    if (toDay>=calendar1.get(Calendar.DAY_OF_MONTH)){
-                        Toast.makeText(MainActivity.this, ""+toYear, Toast.LENGTH_SHORT).show();
-                        toDate.setEnabled(true);
-                    }else {
-                        toDate.setEnabled(false);
-                    }
-                }else if (toMounth>(calendar1.get(Calendar.MONTH)+1)){
-                    toDate.setEnabled(true);
-                }else {
-                    toDate.setEnabled(false);
-                }
-            }else {
-                toDate.setEnabled(false);
-            }
         }
 
 
@@ -226,7 +187,6 @@ public class MainActivity extends AppCompatActivity {
                 if (user!=null){
                     muserName = user.getDisplayName();
                     mUid = user.getUid();
-
                 }else {
                     startActivityForResult(
                             AuthUI.getInstance()
@@ -268,18 +228,76 @@ public class MainActivity extends AppCompatActivity {
                         mDatabaseReference = mFirebaseDatabase.getReference().child(mUid);
                         mDatabaseReference.child(keyValue).setValue(eventList);
                         status = false;
-                        startActivity(new Intent(MainActivity.this,ShowEvent.class));
+                        Intent intent = new Intent(MainActivity.this,ShowEvent.class);
+                        intent.putExtra("uid",mUid);
+                        startActivity(intent);
                     }else {
                         mDatabaseReference = mFirebaseDatabase.getReference().child(mUid);
                         mDatabaseReference.push().setValue(eventList);
                     }
 
 
-                    Toast.makeText(MainActivity.this, "Done", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
+    }
+
+    private void checkDateCondition() {
+        fromDate.setText(fromDay+"/"+fromMounth+"/"+fromYear);
+
+        toDate.setText(""+String.valueOf(toDay)+"/"+String.valueOf(toMounth)+"/"+String.valueOf(toYear));
+
+        Calendar calendar1 = Calendar.getInstance(Locale.getDefault());
+        if (fromYear>=calendar1.get(Calendar.YEAR)){
+            if (fromMounth==(calendar1.get(Calendar.MONTH)+1)){
+                if (fromDay>calendar1.get(Calendar.DAY_OF_MONTH)){
+                    dateStatus=true;
+                    fromDate.setEnabled(true);
+                }else {
+                    dateStatus=false;
+                    destination.setEnabled(false);
+                    fromDate.setEnabled(false);
+                }
+            }else if (fromMounth>(calendar1.get(Calendar.MONTH)+1)){
+                dateStatus=true;
+                fromDate.setEnabled(true);
+            }else {
+                dateStatus=false;
+                destination.setEnabled(false);
+                fromDate.setEnabled(false);
+            }
+        }else {
+            dateStatus=false;
+            destination.setEnabled(false);
+            fromDate.setEnabled(false);
+        }
+
+        if (toYear>=calendar1.get(Calendar.YEAR)){
+            if (toMounth==(calendar1.get(Calendar.MONTH)+1)){
+                if (toDay>=calendar1.get(Calendar.DAY_OF_MONTH)){
+                    dateStatus=true;
+                    toDate.setEnabled(true);
+                }else {
+                    dateStatus=false;
+                    toDate.setEnabled(false);
+                }
+            }else if (toMounth>(calendar1.get(Calendar.MONTH)+1)){
+                dateStatus=true;
+                toDate.setEnabled(true);
+            }else {
+                dateStatus=false;
+                toDate.setEnabled(false);
+            }
+        }else {
+            dateStatus=false;
+            toDate.setEnabled(false);
+        }
+        if (!dateStatus){
+            budget.setEnabled(false);
+            eventName.setEnabled(false);
+            destination.setEnabled(false);
+        }
     }
 
     @Override
@@ -337,22 +355,6 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("uid",mUid);
         startActivity(intent);
     }
-
-
-    /*private BroadcastReceiver keyReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Toast.makeText(MainActivity.this, "Called", Toast.LENGTH_SHORT).show();
-            keyValue = intent.getStringExtra("key");
-            status = intent.getBooleanExtra("status",false);
-            fromDay= intent.getIntExtra("fromDay",-1);
-            fromMounth= intent.getIntExtra("fromMounth",-1);
-            fromYear= intent.getIntExtra("fromYear",-1);
-            toDay= intent.getIntExtra("toDay",-1);
-            toMounth= intent.getIntExtra("toMounth",-1);
-            toYear= intent.getIntExtra("toYear",-1);
-        }
-    };*/
 
 }
 
