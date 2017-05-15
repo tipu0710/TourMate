@@ -85,24 +85,26 @@ public class MainActivity extends AppCompatActivity {
             mDatabaseReference.child(keyValue).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    String s = (String) dataSnapshot.child("eventName").getValue();
-                    eventName.setText(s);
-                    s=(String) dataSnapshot.child("budget").getValue();
-                    budget.setText(s);
-                    s= (String) dataSnapshot.child("destination").getValue();
-                    destination.setText(s);
-                    HashMap<Long,Object> map = new HashMap<>();
-                    map = (HashMap<Long, Object>) dataSnapshot.child("fromDateFinder").getValue();
-                    fromDay= (long) map.get("day");
-                    fromMounth= (long) map.get("mounth");
-                    fromYear= (long) map.get("year");
-                    
-                    map = (HashMap<Long, Object>) dataSnapshot.child("toDateFinder").getValue();
-                    toDay= (long) map.get("day");
-                    toMounth= (long) map.get("mounth");
-                    toYear= (long) map.get("year");
+                    if (status){
+                        String s = (String) dataSnapshot.child("eventName").getValue();
+                        eventName.setText(s);
+                        s=(String) dataSnapshot.child("budget").getValue();
+                        budget.setText(s);
+                        s= (String) dataSnapshot.child("destination").getValue();
+                        destination.setText(s);
+                        HashMap<Long,Object> map = new HashMap<>();
+                        map = (HashMap<Long, Object>) dataSnapshot.child("fromDateFinder").getValue();
+                        fromDay= (long) map.get("day");
+                        fromMounth= (long) map.get("mounth");
+                        fromYear= (long) map.get("year");
 
-                    checkDateCondition();
+                        map = (HashMap<Long, Object>) dataSnapshot.child("toDateFinder").getValue();
+                        toDay= (long) map.get("day");
+                        toMounth= (long) map.get("mounth");
+                        toYear= (long) map.get("year");
+
+                        checkDateCondition();
+                    }
                 }
 
                 @Override
@@ -112,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
             });
 
             createEvent.setText("Update");
-            showEventBtn.setVisibility(View.GONE);
+            showEventBtn.setText("Delete");
 
         }
 
@@ -297,6 +299,7 @@ public class MainActivity extends AppCompatActivity {
             budget.setEnabled(false);
             eventName.setEnabled(false);
             destination.setEnabled(false);
+            createEvent.setEnabled(false);
         }
     }
 
@@ -348,6 +351,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showEvent(View view) {
+        if (status){
+            mDatabaseReference = mFirebaseDatabase.getReference().child(mUid);
+            mDatabaseReference.child(keyValue).removeValue();
+            status = false;
+        }
         Intent intent = new Intent(this,ShowEvent.class);
         intent.putExtra("uid",mUid);
         startActivity(intent);

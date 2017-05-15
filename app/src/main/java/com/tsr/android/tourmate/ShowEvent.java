@@ -95,6 +95,8 @@ public class ShowEvent extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
+
+
             }
 
         };
