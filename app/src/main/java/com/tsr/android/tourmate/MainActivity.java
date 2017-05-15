@@ -319,7 +319,6 @@ public class MainActivity extends AppCompatActivity {
         if (mAuthStateListener != null) {
             mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
         }
-        /*LocalBroadcastManager.getInstance(this).unregisterReceiver(keyReceiver);*/
     }
 
 
@@ -328,8 +327,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
-        /*IntentFilter intentFilter = new IntentFilter(ShowEvent.ACTION);
-        LocalBroadcastManager.getInstance(this).registerReceiver(keyReceiver,intentFilter);*/
     }
 
     @Override

@@ -92,12 +92,6 @@ public class ShowEvent extends AppCompatActivity {
                         intent.putExtra("key",key);
                         intent.putExtra("status",true);
                         intent.putExtra("uid",mUid);
-                        /*intent.putExtra("fromDay",fromDay);
-                        intent.putExtra("fromMounth",fromMounth);
-                        intent.putExtra("fromYear",fromYear);
-                        intent.putExtra("toDay",toDay);
-                        intent.putExtra("toMounth",toMounth);
-                        intent.putExtra("toYear",toYear);*/
                         startActivity(intent);
                     }
                 });
