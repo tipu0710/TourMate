@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
             });
 
             createEvent.setText("Update");
-            showEventBtn.setText("Delete");
+            showEventBtn.setVisibility(View.GONE);
 
         }
 
@@ -351,11 +351,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showEvent(View view) {
-        if (status){
-            mDatabaseReference = mFirebaseDatabase.getReference().child(mUid);
-            mDatabaseReference.child(keyValue).removeValue();
-            status = false;
-        }
         Intent intent = new Intent(this,ShowEvent.class);
         intent.putExtra("uid",mUid);
         startActivity(intent);

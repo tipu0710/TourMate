@@ -10,6 +10,15 @@ public class EventList {
     private String budget;
     private DateFinder fromDateFinder;
     private DateFinder toDateFinder;
+    private int totalCost;
+
+    public int getTotalCost() {
+        return totalCost;
+    }
+
+    public void setTotalCost(int totalCost) {
+        this.totalCost = totalCost;
+    }
 
     public EventList(String eventName, String destination, String budget, DateFinder fromDateFinder, DateFinder toDateFinder) {
         this.eventName = eventName;
@@ -61,4 +70,5 @@ public class EventList {
     public void setToDateFinder(DateFinder toDateFinder) {
         this.toDateFinder = toDateFinder;
     }
+
 }

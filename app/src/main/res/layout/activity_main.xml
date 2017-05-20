@@ -42,11 +42,10 @@
         android:text="Create Event"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-<Button
+    <Button
         android:id="@+id/show_event"
         android:text="Show Event"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="showEvent"/>
-
 </LinearLayout>

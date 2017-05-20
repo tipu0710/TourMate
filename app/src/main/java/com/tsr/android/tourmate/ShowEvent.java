@@ -5,7 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
+import android.view.KeyEvent;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,12 +34,15 @@ public class ShowEvent extends AppCompatActivity {
     private EventAdapter eventAdapter;
     private ArrayList<EventList> eventLists;
     private String mUid= "";
+    private String keyValue;
 
     private long fromDay,fromMounth,fromYear,toDay,toMounth,toYear;
 
     private RecyclerView recyclerView;
     public static final int RC_SIGN_IN = 1;
     public static final String ACTION = "send_key";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +56,7 @@ public class ShowEvent extends AppCompatActivity {
         Intent intent = getIntent();
         mUid = intent.getStringExtra("uid");
         mDatabaseReference = mFirebaseDatabase.getReference().child(mUid);
+
 
     }
 
@@ -88,18 +97,23 @@ public class ShowEvent extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
-                        Intent intent = new Intent(ShowEvent.this,MainActivity.class);
-                        intent.putExtra("key",key);
-                        intent.putExtra("status",true);
-                        intent.putExtra("uid",mUid);
-                        startActivity(intent);
+
                     }
                 });
 
+                viewHolder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        keyValue = key;
+                        return false;
+                    }
+                });
+                registerForContextMenu(viewHolder.mView);
 
             }
 
         };
+
         recyclerView.setAdapter(firebaseRecyclerAdapter);
 
     }
@@ -133,5 +147,47 @@ public class ShowEvent extends AppCompatActivity {
             eventNameTv.setText(toDate);
         }
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        startActivity(new Intent(this,MainActivity.class));
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.show_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+            case R.id.add_cost:
+
+                Intent intent1 = new Intent(ShowEvent.this,CostList.class);
+                intent1.putExtra("key",keyValue);
+                intent1.putExtra("uid",mUid);
+                startActivity(intent1);
+
+                return true;
+            case R.id.delete:
+                mDatabaseReference = mFirebaseDatabase.getReference().child(mUid);
+                mDatabaseReference.child(keyValue).removeValue();
+                return true;
+            case R.id.update:
+                Intent intent = new Intent(ShowEvent.this,MainActivity.class);
+                intent.putExtra("key",keyValue);
+                intent.putExtra("status",true);
+                intent.putExtra("uid",mUid);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
     }
 }
