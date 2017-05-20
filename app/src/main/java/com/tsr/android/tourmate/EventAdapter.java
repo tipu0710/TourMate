@@ -30,18 +30,10 @@ public class EventAdapter extends ArrayAdapter<EventList> {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.single_event_row,parent,false);
         TextView eventName = (TextView) convertView.findViewById(R.id.event_name_tv);
-        TextView budget = (TextView) convertView.findViewById(R.id.budget_tv);
         TextView destination = (TextView) convertView.findViewById(R.id.destination_tv);
-        TextView fromDate = (TextView) convertView.findViewById(R.id.from_date_tv);
-        TextView toDate = (TextView) convertView.findViewById(R.id.to_date_tv);
 
         eventName.setText(eventList.get(position).getEventName());
-        budget.setText(eventList.get(position).getBudget());
         destination.setText(eventList.get(position).getDestination());
-        DateFinder fromDateFinder = eventList.get(position).getFromDateFinder();
-        fromDate.setText(fromDateFinder.getDay()+"/"+ fromDateFinder.getMounth()+"/"+ fromDateFinder.getYear());
-        DateFinder toDateFinder = eventList.get(position).getToDateFinder();
-        toDate.setText(toDateFinder.getDay()+"/"+ toDateFinder.getMounth()+"/"+ toDateFinder.getYear());
         return convertView;
     }
 }

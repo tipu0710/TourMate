@@ -13,20 +13,5 @@
         android:text="Destination"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-<TextView
-        android:id="@+id/budget_tv"
-        android:text="Budget"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-<TextView
-        android:id="@+id/from_date_tv"
-        android:text="From Date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-<TextView
-        android:id="@+id/to_date_tv"
-        android:text="To Date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
 </LinearLayout>

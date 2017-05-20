@@ -76,27 +76,15 @@ public class ShowEvent extends AppCompatActivity {
 
                 viewHolder.setEventName(model.getEventName());
                 viewHolder.setDestination(model.getDestination());
-                viewHolder.setBudget(model.getBudget());
-                DateFinder fromDateFinder = new DateFinder();
-                fromDateFinder = model.getFromDateFinder();
-                fromDay = fromDateFinder.getDay();
-                fromMounth = fromDateFinder.getMounth();
-                fromYear = fromDateFinder.getYear();
-                String formDate = fromDay+"/"+fromMounth+"/"+fromYear;
-                viewHolder.setFromDate(formDate);
-                DateFinder toDateFinder = new DateFinder();
-                toDateFinder = model.getToDateFinder();
-
-                toDay = toDateFinder.getDay();
-                toMounth = toDateFinder.getMounth();
-                toYear = toDateFinder.getYear();
-                String toDate = toDay+"/"+toMounth+"/"+toYear;
-                viewHolder.setToDate(toDate);
 
                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
+                        Intent intent = new Intent(ShowEvent.this,EventDetails.class);
+                        intent.putExtra("uid",mUid);
+                        intent.putExtra("key",key);
+                        startActivity(intent);
 
                     }
                 });
@@ -133,18 +121,6 @@ public class ShowEvent extends AppCompatActivity {
         public void setDestination(String destination){
             TextView eventNameTv = (TextView) mView.findViewById(R.id.destination_tv);
             eventNameTv.setText(destination);
-        }
-        public void setBudget(String budget){
-            TextView eventNameTv = (TextView) mView.findViewById(R.id.budget_tv);
-            eventNameTv.setText(budget);
-        }
-        public void setFromDate(String formDate){
-            TextView eventNameTv = (TextView) mView.findViewById(R.id.from_date_tv);
-            eventNameTv.setText(formDate);
-        }
-        public void setToDate(String toDate){
-            TextView eventNameTv = (TextView) mView.findViewById(R.id.to_date_tv);
-            eventNameTv.setText(toDate);
         }
 
     }

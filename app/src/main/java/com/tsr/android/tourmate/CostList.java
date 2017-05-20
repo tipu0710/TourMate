@@ -89,8 +89,8 @@ public class CostList extends AppCompatActivity {
                             totalAmount = Integer.parseInt(budget);
 
                             if (status){
-                                int percent = (totalAmount-totalCost)/totalAmount*100;
-                                Toast.makeText(CostList.this, ""+percent, Toast.LENGTH_SHORT).show();
+                                int percent = (totalAmount-totalCost)*100/totalAmount;
+                                Toast.makeText(CostList.this, ""+totalAmount, Toast.LENGTH_SHORT).show();
                                 if (percent<=50){
                                     Toast.makeText(CostList.this, "You have "+percent+"% of your budget", Toast.LENGTH_SHORT).show();
                                 }

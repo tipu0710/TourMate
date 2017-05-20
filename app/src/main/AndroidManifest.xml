@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ShowEvent" />
-        <activity android:name=".CostList"></activity>
+        <activity android:name=".CostList" />
+        <activity android:name=".EventDetails"></activity>
     </application>
 
 </manifest>
